@@ -1,0 +1,86 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import './HomeHeader.scss'
+import { LANGUAGES } from '../../utils'
+import { changeLanguageApp } from '../../store/actions/appActions'
+import { withRouter } from 'react-router-dom';
+import logo from "../../assets/images/logo.jpg";
+
+class HomeHeader extends Component {
+
+    changeLanguage = (language) => {
+        this.props.changeLanguageAppRedux(language)
+    }
+
+    returnHome = () => {
+        if (this.props.history) {
+            this.props.history.push(`/home`)
+        }
+    }
+
+    handleLogin = () => {
+        if (this.props.history) {
+            this.props.history.push(`/login`)
+        }
+    }
+    handleViewTeacherMore = () => {
+        if (this.props.history) {
+
+            this.props.history.push(`/teacher_more`)
+        }
+    }
+    handleViewClinicMore = () => {
+        if (this.props.history) {
+            this.props.history.push(`/clinic_more`)
+        }
+    }
+    handleViewCourseMore = () => {
+        if (this.props.history) {
+            this.props.history.push(`/course_more`)
+        }
+    }
+    render() {
+        let language = this.props.language
+        return (
+
+            <React.Fragment>
+                <div className="header">
+                    <header className="base-rectangle1" />
+                    <div className='left-content'>
+                        <img
+                            className='header-logo' src={logo}
+                            onClick={() => this.returnHome()}
+                        />
+                    </div>
+                    <div className="items">
+                        <div className="teachers" onClick={() => this.handleViewTeacherMore()}>Giáo viên</div>
+                        <div className="clinics" onClick={() => this.handleViewClinicMore()}>Cơ sở vật chất</div>
+                        <div className="courses" onClick={() => this.handleViewCourseMore()}>Khóa học</div>
+                    </div>
+                    <div className="right-btn">
+                            <div className="btn-1">TƯ VẤN</div>
+                        
+                            <div className="btn-2" onClick={() => this.handleLogin()}>ĐĂNG NHẬP</div>
+                    </div>
+                </div>
+            </React.Fragment >
+        );
+    }
+
+}
+
+const mapStateToProps = state => {
+    return {
+        language: state.app.language,
+        isLoggedIn: state.user.isLoggedIn
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        changeLanguageAppRedux: (language) => dispatch(changeLanguageApp(language))
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeHeader));
