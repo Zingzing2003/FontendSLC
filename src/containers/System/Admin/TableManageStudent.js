@@ -45,12 +45,12 @@ class TableManageStudent extends Component {
     }
 
     handleEditUser = (user) => {
-        this.props.handleEditUserFromParent(user)
+        this.props.handleEditStudentFromParent(user)
     }
 
     render() {
         let arrStudents = this.state.studentRedux;
-        console.log("check",arrStudents);
+        // console.log("check",arrStudents);
         return (
             <React.Fragment>
                 <table id='TableManageStudent'>

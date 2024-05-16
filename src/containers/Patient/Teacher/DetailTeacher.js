@@ -4,8 +4,6 @@ import HomeHeader from '../../HomePage/HomeHeader';
 import './DetailTeacher.scss'
 import { getDetailDoctorById } from '../../../services/userService'
 import { LANGUAGES } from '../../../utils';
-import DoctorSchedule from './DoctorSchedule';
-import DoctorExtraInfo from './DoctorExtraInfo';
 import HomeFooter from '../../HomePage/HomeFooter'
 
 class DetailTeacher extends Component {
@@ -71,19 +69,7 @@ class DetailTeacher extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className='schedule-doctor'>
-                        <div className='content-left'>
-                            <DoctorSchedule
-                                // truyền state từ cha sang con 
-                                doctorIdFromParent={this.state.currentDoctorId}
-                            />
-                        </div>
-                        <div className='content-right'>
-                            <DoctorExtraInfo
-                                doctorIdFromParent={this.state.currentDoctorId}
-                            />
-                        </div>
-                    </div>
+
                     <div className='detail-info-doctor'>
                         {detailDoctor && detailDoctor.Markdown &&
                             detailDoctor.Markdown.contentHTML &&

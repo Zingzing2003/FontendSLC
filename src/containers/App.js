@@ -17,12 +17,12 @@ import DetailTeacher from './Patient/Teacher/DetailTeacher';
 import Teacher from '../routes/Teacher';
 import VerifyEmail from './Patient/VerifyEmail';
 import DetailCourse from './Patient/DetailCourse';
-import DetailSpecialty from './Patient/Event/DetailSpecialty';
-import DetailClinic from './Patient/Clinic/DetailClinic';
+import DetailEvent from './Patient/Event/DetailEvent';
+
 import teacher_more from './Patient/Teacher/teacher_more';
 import course_more from './Patient/course_more';
-import specialty_more from './Patient/Event/specialty_more';
-import clinic_more from './Patient/Clinic/clinic_more';
+import event_more from './Patient/Event/event_more';
+
 import UserManage from './System/UserManage';
 
 class App extends Component {
@@ -61,13 +61,12 @@ class App extends Component {
                                     <Route path={'/teacher/'} component={userIsAuthenticated(Teacher)} />
                                     <Route path={path.HOMEPAGE} component={HomePage} />
                                     <Route path={path.DETAIL_TEACHER} component={DetailTeacher} />
-                                    <Route path={path.DETAIL_EVENT} component={DetailSpecialty} />
-                                    {/* <Route path={path.DETAIL_CLINIC} component={DetailClinic} /> */}
+                                    <Route path={path.DETAIL_EVENT} component={DetailEvent} />
                                     <Route path={path.VERIFY_EMAIL_BOOKING} component={VerifyEmail} />
                                     <Route path={path.DETAIL_COURSE} component={DetailCourse} />
                                     <Route path={path.TEACHER} component={teacher_more} />
-                                    <Route path={path.SPECIALTY} component={specialty_more} />
-                                    {/* <Route path={path.CLINIC} component={clinic_more} /> */}
+                                    <Route path={path.EVENT} component={event_more} />
+                                    
                                     <Route path={path.COURSE} component={course_more} />
                                 </Switch>
                         </div>

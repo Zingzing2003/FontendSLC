@@ -30,9 +30,9 @@ class HomeHeader extends Component {
             this.props.history.push(`/teacher_more`)
         }
     }
-    handleViewClinicMore = () => {
+    handleViewEventMore = () => {
         if (this.props.history) {
-            this.props.history.push(`/clinic_more`)
+            this.props.history.push(`/event_more`)
         }
     }
     handleViewCourseMore = () => {
@@ -55,7 +55,7 @@ class HomeHeader extends Component {
                     </div>
                     <div className="items">
                         <div className="teachers" onClick={() => this.handleViewTeacherMore()}>Giáo viên</div>
-                        <div className="clinics" onClick={() => this.handleViewClinicMore()}>Cơ sở vật chất</div>
+                        <div className="event" onClick={() => this.handleViewEventMore()}>Sự kiện</div>
                         <div className="courses" onClick={() => this.handleViewCourseMore()}>Khóa học</div>
                     </div>
                     <div className="right-btn">

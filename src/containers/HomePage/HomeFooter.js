@@ -19,13 +19,8 @@ class HomeFooter extends Component {
         }
     }
 
-    handleViewSpecialtyMore = () => {
-        if (this.props.history) {
-            this.props.history.push(`/specialty_more`)
-        }
-    }
 
-    handleViewDoctorMore = () => {
+    handleViewTeacherMore = () => {
         if (this.props.history) {
 
             this.props.history.push(`/teacher_more`)
@@ -34,7 +29,7 @@ class HomeFooter extends Component {
 
     handleViewClinicMore = () => {
         if (this.props.history) {
-            this.props.history.push(`/clinic_more`)
+            this.props.history.push(`/event_more`)
         }
     }
     
@@ -70,11 +65,11 @@ class HomeFooter extends Component {
                             Quick link
                         </b> */}
                         <div>
-                            <p className="txt" onClick={() => this.handleViewDoctorMore()}>
+                            <p className="txt" onClick={() => this.handleViewTeacherMore()}>
                                 Giáo viên
                             </p>
                             <p className="txt" onClick={() => this.handleViewClinicMore()}>
-                                Cơ sở vật chất
+                                Sự kiện
                             </p>
                             <p className="txt" onClick={() => this.handleViewCourseMore()}>
                                 

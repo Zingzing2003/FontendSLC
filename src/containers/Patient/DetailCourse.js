@@ -5,7 +5,7 @@ import './DetailCourse.scss'
 import { getDetailCourse } from '../../services/userService'
 import HomeFooter from '../HomePage/HomeFooter'
 import { Button } from 'reactstrap';
-
+import RegisterModal from './RegisterModal';
 class DetailCourse extends Component {
 
     constructor(props) {
@@ -13,6 +13,8 @@ class DetailCourse extends Component {
         this.state = {
             detailCourse: {},
             currentCourseId: -1
+            ,isOpenRegisterModel:false,
+            dataScheduleTimeModal:""
         }
     }
 
@@ -35,6 +37,17 @@ class DetailCourse extends Component {
 
     }
 
+    handleClickOpenModal = () => {
+        this.setState({
+            isOpenRegisterModel: true,
+            dataScheduleTimeModal: "",
+        })
+    }
+    closeModal=()=>{
+        this.setState({
+            isOpenRegisterModel: false
+        })
+    }
     render() {
         console.log(this.props.match.params.id)
         let { detailCourse } = this.state
@@ -63,12 +76,20 @@ class DetailCourse extends Component {
                                 <div dangerouslySetInnerHTML={{ __html: detailCourse.contentHtml }}></div>
                             }
                             <div style={{marginTop:"20px"}} > 
-                            <Button className='btn btn-primary'style={{background:"#f35311", width:"40%",borderRadius: "50px"}}> Đăng kí khóa học</Button>
+                            <button className='btn btn-primary'
+                                    style={{background:"#f35311", width:"40%",borderRadius: "50px"}}
+                                    onClick={() => this.handleClickOpenModal()}
+                             > Đăng kí khóa học</button>
                             </div>
                         </div>
                         
                     </div>
                 </div>
+                <RegisterModal
+                    isOpenRegisterModel={this.state.isOpenRegisterModel}
+                    closeRegisterModel={this.closeModal}
+                     dataScheduleTimeModal={this.state.dataScheduleTimeModal}
+                />
                 <HomeFooter />
             </div>
         );

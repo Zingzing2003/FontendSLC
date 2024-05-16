@@ -7,7 +7,7 @@ import HomeHeader from '../HomePage/HomeHeader';
 import HomeFooter from '../HomePage/HomeFooter'
 import './course_more.scss';
 
-import handbook_sample from '../../assets/handbook/handbook-sample.jpg'
+import event_sample from '../../assets/course/course-2.jpg'
 import TagCourse from '../../components/tag-homepage/tag-Course';
 
 
@@ -82,7 +82,7 @@ class course_more extends Component {
                                         <TagCourse
                                             date="12/03/2024"
                                             description={data.CourseName}
-                                            imageSrc={handbook_sample}
+                                            imageSrc={event_sample}
                                         />
                                     </div>
                                 )

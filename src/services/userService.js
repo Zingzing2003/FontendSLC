@@ -131,6 +131,9 @@ let postSendRemedy = (data) => {
 let getClassById=(id)=>{
     return axios.get(`/api/get-class-by-id?id=${id}`);
 }
+let getUserFromStudent=(id)=>{
+    return axios.get(`/api/get-user-from-student?id=${id}`);
+}
 
 export {
     getClassById,
@@ -143,5 +146,6 @@ export {
     postSendRemedy, createNewHandbook, getAllHandbook, getHandbookHomeService,
     getDetailCourse, getAllCourses,getTopTeacher
     ,getAllEvents,
-    getDetailEventById
+    getDetailEventById, 
+    getUserFromStudent
 }

@@ -6,10 +6,10 @@ import specialtyImg from '../../../assets/specialty/than-kinh.jpg'
 import { getAllSpecialty } from '../../../services/userService'
 import { getAllCourses ,getAllEvents} from '../../../services/userService'//
 import { withRouter } from 'react-router'
-import TagSpecialty from '../../../components/tag-homepage/tag-specialty';
+import TagEvent from '../../../components/tag-homepage/tag-event';
 import Loading from '../../../components/loading/loading'
 
-class Specialty extends Component {
+class Event extends Component {
 
     constructor(props) {
         super(props)
@@ -34,7 +34,7 @@ class Specialty extends Component {
         this.props.settings && this.setState({ isLoading: false });
     }
 
-    handleViewDetailSpecialty = (item) => {
+    handleViewDetailEvent = (item) => {
         if (this.props.history) {
             this.props.history.push(`/detail-event/${item.ID}`)
         }
@@ -67,9 +67,9 @@ class Specialty extends Component {
                                 return (
                                     <div
                                         className='section-customize ' key={index}
-                                        onClick={() => this.handleViewDetailSpecialty(item)}
+                                        onClick={() => this.handleViewDetailEvent(item)}
                                     >
-                                        <TagSpecialty
+                                        <TagEvent
                                             date="12/03/2024"
                                             description={item.EventName}
                                             imageSrc={item.EventImage}
@@ -101,4 +101,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Specialty));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Event));

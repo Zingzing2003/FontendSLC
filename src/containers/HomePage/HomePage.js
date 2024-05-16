@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import HomeHeader from './HomeHeader'
-import Specialty from './Section/Specialty';
-import MedicalFacility from './Section/MedicalFacility'
+import Event from './Section/Event';
 import Course from './Section/Course'
 import AboutUs from './Section/AboutUs'
 import HomeFooter from './HomeFooter'
@@ -28,8 +27,8 @@ class HomePage extends Component {
                 <HomeHeader isShowBanner={true} />
                 <AboutUs/>
                 <section className="for-loop">
-                    <Specialty settings={settings} />
-                    {/* <MedicalFacility settings={settings} /> */}
+                    <Event settings={settings} />
+                    
                     <OutStandingTeacher settings={settings} />
                     <Course settings={settings} />
                     <About/>

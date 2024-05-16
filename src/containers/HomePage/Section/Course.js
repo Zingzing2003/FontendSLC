@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import * as actions from '../../../store/actions'
 import { withRouter } from 'react-router-dom';
 import TagHandbook from '../../../components/tag-homepage/tag-Course';
-import handbook_sample from '../../../assets/handbook/course-1.jpg'
+import handbook_sample from '../../../assets/course/course-1.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../../components/loading/loading';

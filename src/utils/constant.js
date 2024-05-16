@@ -10,8 +10,7 @@ export const path = {
     VERIFY_EMAIL_BOOKING: '/verify-booking',
     DETAIL_COURSE: '/detail-course/:id',
     TEACHER: "/teacher_more",//'/doctor_more',
-    SPECIALTY: '/specialty_more',
-    CLINIC: '/clinic_more',
+    EVENT: '/event_more',
     COURSE: '/course_more',
 };
 

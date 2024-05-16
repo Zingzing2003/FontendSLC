@@ -25,8 +25,10 @@ class Header extends Component {
         let menu = []
         if (userInfo && !_.isEmpty(userInfo)) {
             let { roleID } = userInfo
-             //menu = adminMenu
-            menu = teacherMenu
+            if( userInfo[0].Role== "Admin")
+                menu = adminMenu
+            if( userInfo[0].Role== "Teacher")
+                 menu = teacherMenu
             // if (roleID === USER_ROLE.ADMIN) {
             //     menu = adminMenu
             // } else if (roleID === USER_ROLE.DOCTOR) {

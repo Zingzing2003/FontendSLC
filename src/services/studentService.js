@@ -10,8 +10,11 @@ let deleteStudent = (studentId) => {
 let editStudent = (studentId) => {
     return axios.delete(`/api/delete-student?id=${studentId}`);
 }
+let getStudentByClassId= (classId)=>{
+    return axios.get(`/api/get-student-by-class-id?id=${classId}`)
+}
 export
 {
-    getAllStudents,deleteStudent,
+    getAllStudents,deleteStudent,getStudentByClassId,
     editStudent
 }

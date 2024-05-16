@@ -6,6 +6,7 @@ import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
 import { getClassById } from '../../../services/userService';
 import { getTopTeacherByUserId } from '../../../services/teacherService';
+import { getStudentByClassId } from '../../../services/studentService';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
@@ -21,6 +22,7 @@ class TableManageClassStudent extends Component {
         this.state = {
             arrClass: [],
             TeacherName:"",
+            students:[],
             
         }
     }
@@ -46,6 +48,15 @@ class TableManageClassStudent extends Component {
                     arrClass: res.data
                 })
             }
+            let res2= await getStudentByClassId(this.state.arrClass[0].ClassId);
+            if ( res2 && res2.errCode==0)
+                {
+                    this.setState({
+                        students: res2.data
+                    })
+                }
+
+
         }
     }
     getAllClassFromReact = async () => {
@@ -73,31 +84,32 @@ class TableManageClassStudent extends Component {
 
     render() {
         let  arrClass = this.state. arrClass;
+        let students= this.state.students;
         //console.log("check class", arrClass);
         return (
             <React.Fragment>
-                <table id='TableManageClass'>
+                <table id='TableManageClass' className='container'>
                     <tr>
-                        <th>Tên lớp học</th>
+                        <th>Họ và Tên</th>
                         
-                        <th>Giáo viên phụ trách</th>
-                        <th>Mã khóa học</th>
+                        <th>Địa chỉ</th>
+                        <th>Email</th>
                         
                         <th>Thao tác</th>
                     </tr>
-                    { arrClass &&  arrClass.length > 0 &&
-                         arrClass.map((item, index) => {
+                    { students &&  students.length > 0 &&
+                         students.map((item, index) => {
                             return (
                                 <tr key={index}>
-                                    <td>{item.ClassName}</td>
+                                    <td>{item.StudentName}</td>
                                    
-                                    <td>{this.state.TeacherName}</td>
-                                    <td>{item.CourseId}</td>
+                                    <td>{item.Address}</td>
+                                    <td>{item.Email}</td>
                                     
                                     <td>
                                         <button className=' ml-5'
                                             onClick={() => this.handleEditUser(item)}>
-                                                <a href="http://localhost:3000/doctor/manage-schedule">Xem lớp </a>
+                                               <a href="http://localhost:3000/teacher/manage-class-student">Xem lớp </a>
                                         </button>
                                         
                                     </td>

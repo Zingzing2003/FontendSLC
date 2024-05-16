@@ -21,8 +21,6 @@ class System extends Component {
                         <Switch>
                             {/* <Route path="/system/user-manage" component={UserManage} /> */}
                             <Route path="/system/user-redux" component={UserRedux} />
-                            {/* <Route path="/system/manage-doctor" component={ManageDoctor} />//
-                             */}
                             <Route path="/system/manage-teacher" component={ManageTeacher} />
                             <Route path="/system/manage-specialty" component={ManageSpecialty} />
                             <Route path="/system/manage-handbook" component={ManageHandbook} />

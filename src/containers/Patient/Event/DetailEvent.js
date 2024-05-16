@@ -1,48 +1,34 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 // import { FormattedMessage } from 'react-intl';
-import './DetailClinic.scss'
+import './DetailEvent.scss'
 import HomeHeader from '../../HomePage/HomeHeader';
-import DoctorSchedule from '../Teacher/DoctorSchedule';
-import DoctorExtraInfo from '../Teacher/DoctorExtraInfo';
-import ProfileDoctor from '../Teacher/ProfileDoctor';
-import { getDetailClinicById, getAllCodeService } from '../../../services/userService'
+import { getDetailEventById, getAllCodeService } from '../../../services/userService'
 import _ from 'lodash';
 import HomeFooter from '../../HomePage/HomeFooter'
-
-class DetailClinic extends Component {
+<HomeFooter />
+class DetailEvent extends Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            arrDoctorId: [],
-            dataDetailClinic: {}
+            
+            dataDetailEvent: {},
+            listProvince: []
         }
     }
 
     async componentDidMount() {
         if (this.props.match && this.props.match.params && this.props.match.params.id) {
             let id = this.props.match.params.id
+            // let location = e.target.value
 
-            let res = await getDetailClinicById({
-                id: id
-            })
-
-            if (res && res.errCode === 0) {
-                let data = res.data
-                let arrDoctorId = []
-                if (data && !_.isEmpty(res.data)) {
-                    let arr = data.doctorClinic
-                    if (arr && arr.length > 0) {
-                        arr.map(item => {
-                            arrDoctorId.push(item.doctorId)
-                        })
-                    }
-                }
-
-                this.setState({
-                    dataDetailClinic: res.data,
-                    arrDoctorId
+            let res = await getDetailEventById(id);
+            
+            if (res && res.errCode === 0) {             
+                  this.setState({
+                    dataDetailEvent: res.data,
+                    
                 })
             }
         }
@@ -52,25 +38,45 @@ class DetailClinic extends Component {
 
     }
 
-    render() {
-        let { arrDoctorId, dataDetailClinic } = this.state
-        console.log('check state: ', this.state)
-        return (
-            <div className='detail-specialty-container'>
-                <HomeHeader />
-                <div className='detail-specialty-body'>
-                    <div className='description-specialty'>
-                        {dataDetailClinic && !_.isEmpty(dataDetailClinic)
-                            &&
-                            <>
-                                <div className='clinic-name'>{dataDetailClinic.name}</div>
-                                <div dangerouslySetInnerHTML={{ __html: dataDetailClinic.descriptionHtml }}>
+    handleOnChangeSelect = async (e) => {
+        
+    }
 
-                                </div>
-                            </>
-                        }
+    render() {
+        let { dataDetailEvent } = this.state
+        console.log('check state: ', dataDetailEvent)
+        return (
+            <div className='detail-event-container'>
+                <HomeHeader />
+                <div className='detail-event-body'>
+                    <div className='description-event'>
+                        {/* {dataDetailEvent && !_.isEmpty(dataDetailEvent)
+                            &&
+                            <div dangerouslySetInnerHTML={{ __html: dataDetailEvent.descriptionHtml }}>
+
+                            </div>
+                        } */}
+                        
+                        <div>
+                            <div>{dataDetailEvent.EventName}</div>
+                            <p>{dataDetailEvent.Description}</p>
+                        </div>
                     </div>
-                    {arrDoctorId && arrDoctorId.length > 0 &&
+                    
+                    {/* <div className='search-sp-doctor'>
+                        <select onChange={(e) => this.handleOnChangeSelect(e)}>
+                            {listProvince && listProvince.length > 0
+                                && listProvince.map((item, index) => {
+                                    return (
+                                        <option key={index} value={item.keyMap}>
+                                            {item.valueVi}
+                                        </option>
+                                    )
+                                })
+                            }
+                        </select>
+                    </div> */}
+                    {/* {arrDoctorId && arrDoctorId.length > 0 &&
                         arrDoctorId.map((item, index) => {
                             return (
                                 <div className='each-doctor'>
@@ -102,7 +108,7 @@ class DetailClinic extends Component {
 
                             )
                         })
-                    }
+                    } */}
                 </div>
                 <HomeFooter />
             </div>
@@ -122,4 +128,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailClinic);
+export default connect(mapStateToProps, mapDispatchToProps)(DetailEvent);

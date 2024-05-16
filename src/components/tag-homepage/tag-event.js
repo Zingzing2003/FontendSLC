@@ -1,13 +1,13 @@
 import React from 'react';
-import "./tag-specialty.scss";
+import "./tag-event.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const TagSpecialty = ({ date, description, imageSrc }) => {
+const TagEvent = ({ date, description, imageSrc }) => {
   return (
-    <div className="tag-specialty">
-      <section className="masked-doctor-image">
+    <div className="tag-event">
+      <section className="masked-event-image">
         <img
-          className="img-doctor-content"
+          className="img-event-content"
           loading="lazy"
           alt=""
           // 
@@ -25,4 +25,4 @@ const TagSpecialty = ({ date, description, imageSrc }) => {
   );
 };
 
-export default TagSpecialty;
+export default TagEvent;

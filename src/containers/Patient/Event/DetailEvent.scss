@@ -1,15 +1,11 @@
-.detail-specialty-container {
+.detail-event-container {
     min-height: 555px;
-    .description-specialty {
+    .description-event {
         background-color: white !important;
         padding: 10px;
         margin: 15px 0;
+        height: 800px;;
 
-        .clinic-name {
-            font-size: 25px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
 
         h1,
         h2,
@@ -20,7 +16,7 @@
     }
 
     .search-sp-doctor {
-        select {
+        .select {
             height: 30px;
             padding: 5px 8px;
             border: none;
@@ -30,7 +26,7 @@
         }
     }
 
-    .detail-specialty-body {
+    .detail-event-body {
         padding: 0 100px;
         background-color: #eee;
         display: flex;

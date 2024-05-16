@@ -8,17 +8,15 @@ import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
 import TableManageUser from "./TableManageUser";
 import TableManageStudent from "./TableManageStudent";
-
+import { getUserFromStudent } from '../../../services/userService';
+import ModalStudent from "./ModalStudent";
 class UserRedux extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			// genderArr: [],
-			//positionArr: [],
-			//roleArr: [],
-			//previewImgUrl: "",
+			isOpenModalUser: false,
+			isOpenModalEditUser: false,
 			isOpen: false,
-
 			id: "",
 			UserName: "",
 			Password: "",
@@ -29,10 +27,8 @@ class UserRedux extends Component {
 			Email:"",
 			PhoneNumber: "",
 			Role: "",
-		
-			avatar: "",
-
 			action: "",
+			userEdit:{}
 		};
 	}
 
@@ -43,40 +39,14 @@ class UserRedux extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		// if (prevProps.genderRedux !== this.props.genderRedux) {
-
-		// 	let arrGenders = this.props.genderRedux
-		// 	this.setState({
-		// 		genderArr: arrGenders,
-		// 		gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : ''
-		// 	});
-		// }
-		// if (prevProps.positions !== this.props.positions) {
-		// 	let arrPositions = this.props.positions
-		// 	this.setState({
-		// 		positionArr: arrPositions,
-		// 		position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMapMap : ''
-		// 	});
-		// }
-		// if (prevProps.roles !== this.props.roles) {
-		// 	let arrRoles = this.props.roles
-		// 	this.setState({
-		// 		//roleArr: arrRoles,
-		// 		//role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : ''
-		// 	});
-		// }
+		
 		if (prevProps.users !== this.props.users) {
-			//let arrGenders = this.props.genderRedux
-			//let arrPositions = this.props.positions
-			//let arrRoles = this.props.roles
-
 			this.setState({
 				UserName: "",
 				Password: "",
 				StudentName: "",
 				StudentBirth: "",
 				Address: "",
-				
 				ParentName: "",
 				Email: "",
 				//gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
@@ -103,13 +73,30 @@ class UserRedux extends Component {
 			});
 		}
 	};
+///modal
 
-	openPreviewImage = () => {
-		if (!this.state.previewImgUrl) return;
-		this.setState({
-			isOpen: true,
-		});
-	};
+	handleAddNewUser = () => {
+        this.setState({
+            isOpenModalUser: true
+        })
+    }
+	handleEditNewUser = () => {
+        this.setState({
+            isOpenModalEditUser: true
+        })
+    }
+
+    toggleUserModal = () => {
+        this.setState({
+            isOpenModalUser: !this.state.isOpenModalUser
+        })
+    }
+	toggleEditUserModal = () => {
+        this.setState({
+            isOpenModalEditUser: !this.state.isOpenModalEditUser
+        })
+    }
+
 
 	handleSaveUser = () => {
 		let isValid = this.checkValidInput()
@@ -126,17 +113,12 @@ class UserRedux extends Component {
 				Address: this.state.Address,
 				ParentName: this.state.ParentName,
 				Email: this.state.Email,
-				//roleId: this.state.role,
 				PhoneNumber: this.state.PhoneNumber,
-				//positionId: this.state.position,
-				//avatar: this.state.avatar
+				
 			})
 		}
-
-		// fire edit user
 		if (action === CRUD_ACTIONS.EDIT) {
 			this.props.fetchEditStudentStart({
-				id: this.state.id,
 				UserName: this.state.UserName,
 				Password: this.state.Password,
 				StudentName: this.state.StudentName,
@@ -144,15 +126,12 @@ class UserRedux extends Component {
 				Address: this.state.Address,
 				ParentName: this.state.ParentName,
 				Email: this.state.Email,
-				roleId: this.state.role,
 				PhoneNumber: this.state.PhoneNumber,
-				Role: this.state.Role,
-				avatar: this.state.avatar
 			})
 		}
 	}
 
-	onChangeInput = (e, id) => {
+	handleChangeInput = (e, id) => {
 
 		let copyState = { ...this.state }
 		copyState[id] = e.target.value
@@ -177,27 +156,35 @@ class UserRedux extends Component {
 		return isValid
 	}
 
-	handleEditStudentFromParent = (user) => {
-		let imageBase64 = ''
-		if (user.image) {
-			imageBase64 = new Buffer(user.image, 'base64').toString('binary')
-		}
-
+	handleEditStudentFromParent = async (user) => {
+		// handleEditNewUser();
+		
+		let tk= await getUserFromStudent(user.UserId);
+		console.log(tk);
 		this.setState({
-			id: user.id,
-			UserName: user.UserName,
-			Password: 'HARDCODE',
+			isOpenModalEditUser: true,
+			UserName: tk.data.UserName,
 			StudentName: user.StudentName,
+			Password: tk.data.Password,
 			StudentBirth: user.StudentBirth,
 			Address: user.Address,
 			ParentName: user.ParentName,
 			Email: user.Email,
 			PhoneNumber: user.PhoneNumber,
-			//position: user.positionId,
-			//Role: user.Role,
 			action: CRUD_ACTIONS.EDIT,
-			//previewImgUrl: imageBase64
+			
+
 		})
+
+		// this.setState({
+        //     isOpenModalEditUser: true,
+        //     userEdit: {
+		// 		user,
+		// 		UserName: tk.data.UserName,
+			
+		// 		Password: tk.data.Password,
+		// 	}
+        // })
 	}
 
 	render() {
@@ -212,150 +199,129 @@ class UserRedux extends Component {
 
 		return (
 			<div className="user-redux-container">
-				{/* <div className="title">Thêm người dùng with slc</div> */}
+				<ModalStudent
+                    isOpen={this.state.isOpenModalUser}
+                    toggleFromParent={this.toggleUserModal}
+                    addNewUser={this.props.createNewUserRedux}
+                />
+				<ModalStudent
+                    isOpen={this.state.isOpenModalEditUser}
+                    toggleFromParent={this.toggleEditUserModal}
+                    addNewUser={this.props.createNewUserRedux}
+					user={this.state}
+					
+                />
+				
 				<div className="user-redux-body mt-4">
 					<div className="container">
+						<div className='mx-1 text-center'>
+                    		<button
+                        	className='btn btn-primary px-3'
+                        	onClick={() => this.handleAddNewUser()}>
+                        		<i className="fas fa-user-plus add-user"></i>
+                       			 Add new user
+                    		</button>
+                		</div>
 						<div className="row">
 							<div className="col-12 my-3">
-								{/* <FormattedMessage id="manage-user.add" /> */}
 								Quản lí học sinh
 							</div>
 							<div className="col-3">
 								<label>
-									{/* <FormattedMessage id="manage-user.UserName" /> */}
 									Tài khoản
 								</label>
 								<input
 									className="form-control" type="UserName"
 									value={UserName}
-									onChange={(e) => this.onChangeInput(e, 'UserName')}
+									onChange={(e) => this.handleChangeInput(e, 'UserName')}
 									disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false}
 								/>
 							</div>
 							<div className="col-3">
 								<label>
 									Mật khẩu
-									{/* //<FormattedMessage id="manage-user.password" /> */}
 								</label>
 								<input className="form-control" type="Password"
 									value={Password}
-									onChange={(e) => this.onChangeInput(e, 'Password')}
+									onChange={(e) => this.handleChangeInput(e, 'Password')}
 									disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false}
 								/>
 							</div>
 							<div className="col-3">
 								<label>
-									Họ và tên{/* <FormattedMessage id="manage-user.StudentName" /> */}
+									Họ và tên
 								</label>
 								<input className="form-control" type="text"
 									value={StudentName}
-									onChange={(e) => this.onChangeInput(e, 'StudentName')}
+									onChange={(e) => this.handleChangeInput(e, 'StudentName')}
 								/>
 							</div>
 							<div className="col-3">
 								<label>
-									{/* <FormattedMessage id="manage-user.StudentBirth" /> */}
+								
 									Ngày sinh
 								</label>
 								
                    
                     			<input className="form-control" type="date" id="birthday" name="birthday"
 								value={StudentBirth}
-								onChange={(e) => this.onChangeInput(e, 'StudentBirth')}/>
+								onChange={(e) => this.handleChangeInput(e, 'StudentBirth')}/>
                   
 							</div>
 							<div className="col-3">
 								<label>
-									{/* <FormattedMessage id="manage-user.ParentName" /> */}
 									Địa chỉ
 								</label>
 								<input className="form-control" type="text"
 									value={Address}
-									onChange={(e) => this.onChangeInput(e, 'Address')}
+									onChange={(e) => this.handleChangeInput(e, 'Address')}
 								/>
 							</div>
 							<div className="col-9">
 								<label>
-									{/* <FormattedMessage id="manage-user.ParentName" /> */}
 									Tên phụ huynh
 								</label>
 								<input className="form-control" type="text"
 									value={ParentName}
-									onChange={(e) => this.onChangeInput(e, 'ParentName')}
+									onChange={(e) => this.handleChangeInput(e, 'ParentName')}
 								/>
 							</div>
 
 							<div className="col-9">
 								<label>
-									{/* <FormattedMessage id="manage-user.ParentName" /> */}
+									
 									Email
 								</label>
 								<input className="form-control" type="text"
 									value={Email}
-									onChange={(e) => this.onChangeInput(e, 'Email')}
+									onChange={(e) => this.handleChangeInput(e, 'Email')}
 								/>
 							</div>
 							<div className="col-9">
 								<label>
-									{/* <FormattedMessage id="manage-user.ParentName" /> */}
 									Số điện thoại
 								</label>
 								<input className="form-control" type="text"
 									value={PhoneNumber}
-									onChange={(e) => this.onChangeInput(e, 'PhoneNumber')}
+									onChange={(e) => this.handleChangeInput(e, 'PhoneNumber')}
 								/>
 							</div>
 							<div className="col-3">
 								<label>
 									Chức danh
-									{/* <FormattedMessage id="manage-user.position" /> */}
 								</label>
 								<select class="form-control"
-									onChange={(e) => this.onChangeInput(e, 'Role')}
+									onChange={(e) => this.handleChangeInput(e, 'Role')}
 									value={Role}
 								>
-									{/* {positions &&
-										positions.length > 0 &&
-										positions.map((item, index) => {
-											return (
-												<option key={index} value={item.keyMap}>
-													{language === LANGUAGES.VI
-														? item.valueVi
-														: item.valueEn}
-												</option>
-											);
-										})} */}
+				
 										<option key="1" value="Student">
 													học sinh
 										</option>
 										
 								</select>
-							</div>
-							
-							{/* <div className="col-3">
-								<label>
-									<FormattedMessage id="manage-user.image" />
-								</label>
-								<div className="preview-img-container">
-									<input
-										id="previewImg"
-										type="file"
-										hidden
-										onChange={(e) => this.handleOnChangeImg(e)}
-									/>
-									<label className="label-upload" htmlFor="previewImg">
-										Tải ảnh <i className="fas fa-upload"></i>
-									</label>
-									<div
-										className="previewImg"
-										onClick={() => this.openPreviewImage()}
-										style={{
-											backgroundImage: `url(${this.state.previewImgUrl})`,
-										}}
-									></div>
-								</div>
-							</div> */}
-							<div className="col-12 my-3">
+							</div> 
+							 <div className="col-12 my-3">
 								<button
 									className={
 										this.state.action === CRUD_ACTIONS.EDIT ?
@@ -369,7 +335,7 @@ class UserRedux extends Component {
 									}
 
 								</button>
-							</div>
+							</div> 
 							<div className="col-12 mb-5">
 								{/* <TableManageUser
 									handleEditStudentFromParent={this.handleEditStudentFromParent}

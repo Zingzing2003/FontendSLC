@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from "../../../store/actions";
-import './TableManageClass.scss'
+import './TableManageHomework.scss'
 import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
 import { getClassById } from '../../../services/userService';
 import { getTopTeacherByUserId } from '../../../services/teacherService';
+import { getStudentByClassId } from '../../../services/studentService';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
@@ -14,13 +15,14 @@ function handleEditorChange({ html, text }) {
     console.log('handleEditorChange', html, text);
 }
 
-class TableManageClass extends Component {
+class TableManageHomework extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             arrClass: [],
             TeacherName:"",
+            students:[],
             
         }
     }
@@ -46,6 +48,8 @@ class TableManageClass extends Component {
                     arrClass: res.data
                 })
             }
+            
+
         }
     }
     getAllClassFromReact = async () => {
@@ -67,45 +71,38 @@ class TableManageClass extends Component {
     }
 
 
-    handleEditUser = (id) => {
+    handleEditUser = (user) => {
        // this.props.handleEditUserFromParent(user)
-       console.log("nhan");
-       this.props.location(`/manage-class-student/${id}`)
-    //    if (this.props.history) {
-    //     this.props.push(`http://localhost:3000/teacher/manage-class-student/${id}`)
-    //     }
-    //    <a href="http://localhost:3000/teacher/manage-class-student">Xem lớp </a>
     }
 
     render() {
         let  arrClass = this.state. arrClass;
+        let students= this.state.students;
         //console.log("check class", arrClass);
         return (
             <React.Fragment>
-                <table id='TableManageClass'>
+                <table id='TableManageClass' className='container'>
                     <tr>
-                        <th>Tên lớp học</th>
+                        <th>Tên BTVN</th>
                         
-                        <th>Giáo viên phụ trách</th>
-                        <th>Mã khóa học</th>
+                        <th>Nội dung</th>
+                        <th>Email</th>
                         
                         <th>Thao tác</th>
                     </tr>
-                    { arrClass &&  arrClass.length > 0 &&
-                         arrClass.map((item, index) => {
+                    { students &&  students.length > 0 &&
+                         students.map((item, index) => {
                             return (
                                 <tr key={index}>
-                                    <td>{item.ClassName}</td>
+                                    <td>{item.HomeworkName}</td>
                                    
-                                    <td>{this.state.TeacherName}</td>
-                                    <td>{item.CourseId}</td>
+                                    <td>{item.Address}</td>
+                                    <td></td>
                                     
                                     <td>
                                         <button className=' ml-5'
-                                            onClick={() => this.handleEditUser(item.ClassId)}>
-                                               Xem lớp
-                                                <a href="http://localhost:3000/teacher/manage-class-student">Xem lớp </a>
-                                        
+                                            onClick={() => this.handleEditUser(item)}>
+                                               <a href="http://localhost:3000/teacher/manage-class-student">Xem lớp </a>
                                         </button>
                                         
                                     </td>
@@ -132,4 +129,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TableManageClass);
+export default connect(mapStateToProps, mapDispatchToProps)(TableManageHomework);
