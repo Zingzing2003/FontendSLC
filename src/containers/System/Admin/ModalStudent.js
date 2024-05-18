@@ -12,17 +12,18 @@ class ModalStudent extends Component {
         this.state = {
 			UserName: "",
 			Password: "",
+            StudentId:"",
 			StudentName: "",
 			StudentBirth: "",
 			Address: "",
 			ParentName: "",
 			Email:"",
 			PhoneNumber: "",
-			Role: "Student",
-            ClassId:''
+            ClassId:"",
+            action:"",
         }
        
-       // this.listenToEmitter()
+        this.listenToEmitter()
     }
 
     listenToEmitter = () => {
@@ -30,13 +31,13 @@ class ModalStudent extends Component {
             this.setState({
             UserName: "",
 			Password: "",
+            StudentId:"",
 			StudentName: "",
 			StudentBirth: "",
 			Address: "",
 			ParentName: "",
 			Email:"",
 			PhoneNumber: "",
-			Role: "",
             ClassId:''
             ,action:''
             })
@@ -45,19 +46,22 @@ class ModalStudent extends Component {
     
 
     componentDidMount() {
+        console.log("mounted"); 
         let user = this.props.user;
-        console.log("okema");
+        
         if (user ) {// isOpenModalEditUser: true,
             
             this.setState({
                 UserName: user.UserName,
 				Password: user.Password,
+                StudentId: user.StudentId,
 				StudentName: user.StudentName,
 				StudentBirth: user.StudentBirth,
 				Address: user.Address,
 				ParentName: user.ParentName,
 				Email: user.Email,
 				PhoneNumber: user.PhoneNumber,
+                ClassId: user.ClassId,
                 action: user.action
             })
         }
@@ -91,20 +95,12 @@ class ModalStudent extends Component {
 
     handleAddNewUser = () => {
         let isValid = this.checkValidInput()
-        if (isValid === true) {
-            this.props.createNewUserRedux(
-                {
-                UserName: this.state.UserName,
-				Password: this.state.Password,
-				StudentName: this.state.StudentName,
-				StudentBirth: this.state.StudentBirth,
-				Address: this.state.Address,
-				ParentName: this.state.ParentName,
-				Email: this.state.Email,
-				PhoneNumber: this.state.PhoneNumber,
-                }
+         if(isValid === true) {
+            console.log("stsw", this.state);
+            this.props.addNewUser(
+                this.state
             )
-        }
+         }
     }
 
     render() {
@@ -149,20 +145,21 @@ class ModalStudent extends Component {
                             <input 
                                type="date"
 								value={this.state.StudentBirth}
-								onChange={(e) => this.handleChangeInput(e, 'StudentBirth')}/>
+								onChange={(e) => {this.handleChangeInput(e, 'StudentBirth')}}/>
             
                         </div>
                         <div className='input-container max-width-input'>
                             <label>Address</label>
                             <input
                                 type='text'
-                                onChange={(e) => { this.handleChangeInput(e, 'address') }}
                                 value={this.state.Address}
+                                onChange={(e) => { this.handleChangeInput(e, 'Address') }}
+                               
                             />
                         </div>
                         <div className='input-container'>
                             <label>
-									{/* <FormattedMessage id="manage-user.ParentName" /> */}
+									
 									Tên phụ huynh
 							</label>
 							<input className="form-control" type="text"
@@ -189,14 +186,30 @@ class ModalStudent extends Component {
 									onChange={(e) => this.handleChangeInput(e, 'PhoneNumber')}
 							/>
                         </div>
+                        <div className='input-container'>
+                            <label>
+									ClassId
+							</label>
+							<input className="form-control" type="text"
+									value={this.state.ClassId}
+									onChange={(e) => this.handleChangeInput(e, 'ClassId')}
+							/>
+                        </div>
                     </div>
                 </ModalBody>
                 <ModalFooter>
                     <button
-                        className='btn btn-primary'
+
+                        className={
+										this.state.action === CRUD_ACTIONS.EDIT ?
+											"btn btn-warning" : "btn btn-primary"
+									}
                         onClick={() => this.handleAddNewUser()}
                     >
-                        Add new
+                        {this.state.action === CRUD_ACTIONS.EDIT ?
+										"Lưu thay đổi" :
+										"Lưu người dùng"
+									}
                     </button>{' '}
                     <Button
                         color="secondary"

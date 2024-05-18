@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
-import { LANGUAGES, CRUD_ACTIONS, CommonUtils } from "../../../utils";
+import { CRUD_ACTIONS, CommonUtils } from "../../../utils";
 import * as actions from "../../../store/actions";
 import "./UserRedux.scss";
 import Lightbox from "react-image-lightbox";
 import "react-image-lightbox/style.css";
-import TableManageUser from "./TableManageUser";
 import TableManageStudent from "./TableManageStudent";
 import { getUserFromStudent } from '../../../services/userService';
 import ModalStudent from "./ModalStudent";
@@ -16,10 +14,9 @@ class UserRedux extends Component {
 		this.state = {
 			isOpenModalUser: false,
 			isOpenModalEditUser: false,
-			isOpen: false,
-			id: "",
 			UserName: "",
 			Password: "",
+			StudentId:"",
 			StudentName: "",
 			StudentBirth: "",
 			Address: "",
@@ -27,8 +24,8 @@ class UserRedux extends Component {
 			Email:"",
 			PhoneNumber: "",
 			Role: "",
+			ClassId:"",
 			action: "",
-			userEdit:{}
 		};
 	}
 
@@ -44,16 +41,13 @@ class UserRedux extends Component {
 			this.setState({
 				UserName: "",
 				Password: "",
+				StudentId:"",
 				StudentName: "",
 				StudentBirth: "",
 				Address: "",
 				ParentName: "",
 				Email: "",
-				//gender: arrGenders && arrGenders.length > 0 ? arrGenders[0].keyMap : '',
-				PhoneNumber:"",
-				//position: arrPositions && arrPositions.length > 0 ? arrPositions[0].keyMap : '',
-				//role: arrRoles && arrRoles.length > 0 ? arrRoles[0].keyMap : '',
-				avatar: "",
+				ClassId:"",
 				action: CRUD_ACTIONS.CREATE,
 				//previewImgUrl: ""
 			})
@@ -98,35 +92,40 @@ class UserRedux extends Component {
     }
 
 
-	handleSaveUser = () => {
-		let isValid = this.checkValidInput()
-		if (isValid === false) return
-		let { action } = this.state
+	handleSaveUser = (data) => {
+		console.log("ste", data);
+		// let isValid = this.checkValidInput()
+		// if (isValid === false) return
+		let action  = data.action;
 
 		// fire create user
 		if (action === CRUD_ACTIONS.CREATE) {
 			this.props.createNewUserRedux({
-				UserName: this.state.UserName,
-				Password: this.state.Password,
-				StudentName: this.state.StudentName,
-				StudentBirth: this.state.StudentBirth,
-				Address: this.state.Address,
-				ParentName: this.state.ParentName,
-				Email: this.state.Email,
-				PhoneNumber: this.state.PhoneNumber,
+				UserName: data.UserName,
+				Password: data.Password,
+				StudentId:data.StudentId,
+				StudentName: data.StudentName,
+				StudentBirth: data.StudentBirth,
+				Address: data.Address,
+				ParentName: data.ParentName,
+				Email: data.Email,
+				PhoneNumber: data.PhoneNumber,
+				ClassId: data.ClassId
 				
 			})
 		}
 		if (action === CRUD_ACTIONS.EDIT) {
 			this.props.fetchEditStudentStart({
-				UserName: this.state.UserName,
-				Password: this.state.Password,
-				StudentName: this.state.StudentName,
-				StudentBirth: this.state.StudentBirth,
-				Address: this.state.Address,
-				ParentName: this.state.ParentName,
-				Email: this.state.Email,
-				PhoneNumber: this.state.PhoneNumber,
+				UserName: data.UserName,
+				Password: data.Password,
+				StudentId:data.StudentId,
+				StudentName: data.StudentName,
+				StudentBirth: data.StudentBirth,
+				Address: data.Address,
+				ParentName: data.ParentName,
+				Email: data.Email,
+				PhoneNumber: data.PhoneNumber,
+				ClassId: data.ClassId
 			})
 		}
 	}
@@ -158,12 +157,12 @@ class UserRedux extends Component {
 
 	handleEditStudentFromParent = async (user) => {
 		// handleEditNewUser();
-		
 		let tk= await getUserFromStudent(user.UserId);
 		console.log(tk);
 		this.setState({
 			isOpenModalEditUser: true,
 			UserName: tk.data.UserName,
+			StudentId: user.StudentId,
 			StudentName: user.StudentName,
 			Password: tk.data.Password,
 			StudentBirth: user.StudentBirth,
@@ -171,50 +170,39 @@ class UserRedux extends Component {
 			ParentName: user.ParentName,
 			Email: user.Email,
 			PhoneNumber: user.PhoneNumber,
+			ClassId: user.ClassId,
 			action: CRUD_ACTIONS.EDIT,
 			
 
 		})
-
-		// this.setState({
-        //     isOpenModalEditUser: true,
-        //     userEdit: {
-		// 		user,
-		// 		UserName: tk.data.UserName,
-			
-		// 		Password: tk.data.Password,
-		// 	}
-        // })
 	}
 
 	render() {
-		//et genders = this.state.genderArr;
-		//let positions = this.state.positionArr;
-		//let roles = this.state.roleArr;
-		let language = this.props.language;
 		let {
 			UserName, Password, StudentName, StudentBirth, Address,
-			ParentName,Email, PhoneNumber, Role,  avatar,
+			ParentName,Email, PhoneNumber, Role,ClassId
 		} = this.state;
 
 		return (
 			<div className="user-redux-container">
+				{this.state.isOpenModalUser &&
 				<ModalStudent
                     isOpen={this.state.isOpenModalUser}
                     toggleFromParent={this.toggleUserModal}
-                    addNewUser={this.props.createNewUserRedux}
-                />
+                    addNewUser={this.handleSaveUser}
+                />}
+				{this.state.isOpenModalEditUser &&
 				<ModalStudent
                     isOpen={this.state.isOpenModalEditUser}
                     toggleFromParent={this.toggleEditUserModal}
-                    addNewUser={this.props.createNewUserRedux}
+                    addNewUser={this.handleSaveUser}
 					user={this.state}
 					
-                />
+                />}
 				
 				<div className="user-redux-body mt-4">
 					<div className="container">
-						<div className='mx-1 text-center'>
+						 <div className='mx-1 text-center'>
                     		<button
                         	className='btn btn-primary px-3'
                         	onClick={() => this.handleAddNewUser()}>
@@ -223,7 +211,7 @@ class UserRedux extends Component {
                     		</button>
                 		</div>
 						<div className="row">
-							<div className="col-12 my-3">
+							{/*<div className="col-12 my-3">
 								Quản lí học sinh
 							</div>
 							<div className="col-3">
@@ -335,12 +323,8 @@ class UserRedux extends Component {
 									}
 
 								</button>
-							</div> 
+							</div>  */}
 							<div className="col-12 mb-5">
-								{/* <TableManageUser
-									handleEditStudentFromParent={this.handleEditStudentFromParent}
-									action={this.state.action}
-								/> */}
 								<TableManageStudent
 									handleEditStudentFromParent={this.handleEditStudentFromParent}
 									action={this.state.action}

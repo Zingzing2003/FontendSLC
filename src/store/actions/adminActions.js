@@ -178,7 +178,7 @@ export const fetchDeleteStudentFailed = () => ({
 export const fetchEditStudentStart = (data) => {
     return async (dispatch, getState) => {
         try {
-            let res = await editStudent(data)
+            let res = await editStudent(data);
             if (res && res.errCode === 0) {
                 toast.success('Edit Student success!')
                 dispatch(fetchEditStudentSuccess())

@@ -7,8 +7,8 @@ let getAllStudents = (inputId) => {
 let deleteStudent = (studentId) => {
     return axios.delete(`/api/delete-student?id=${studentId}`);
 }
-let editStudent = (studentId) => {
-    return axios.delete(`/api/delete-student?id=${studentId}`);
+let editStudent = (data) => {
+    return axios.put(`/api/edit-students`,data);
 }
 let getStudentByClassId= (classId)=>{
     return axios.get(`/api/get-student-by-class-id?id=${classId}`)

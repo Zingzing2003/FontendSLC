@@ -5,6 +5,7 @@ import * as actions from "../../../store/actions";
 import './TableManageStudent.scss'
 
 import MarkdownIt from 'markdown-it';
+import Swal from 'sweetalert2';
 // import style manually
 import 'react-markdown-editor-lite/lib/index.css';
 
@@ -41,7 +42,24 @@ class TableManageStudent extends Component {
     }
 
     handleDeleteStudent = (user) => {
-        this.props.fetchDeleteStudentStart(user.StudentId)
+        Swal.fire({
+            title: 'Bạn chắc chắn chứ?',
+            text: "Bạn sẽ không thể khôi phục lại!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Đúng, Xóa!',
+            cancelButtonText:'Hủy',
+          })
+          .then((result )=>{
+            if (result.isConfirmed) {
+                //setIsLoadingWithBackdrop(true);
+                
+                this.props.fetchDeleteStudentStart(user.StudentId);
+              }
+           
+          })
     }
 
     handleEditUser = (user) => {

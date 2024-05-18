@@ -86,7 +86,7 @@ class RegisterModel extends Component {
     }
 
     render() {
-        let { isOpenRegisterModel, closeRegisterModel, dataScheduleTimeModal } = this.props
+        let { isOpenRegisterModel, closeRegisterModel } = this.props
         console.log(this.state.selectedGender);
         return (
             <div>
@@ -104,18 +104,6 @@ class RegisterModel extends Component {
                             ><i className='fas fa-times'></i></span>
                         </div>
                         <div className='RegisterModel-body'>
-                            {/* <div className='doctor-info'>
-                                <ProfileDoctor
-                                    doctorId={doctorId}
-                                    isShowDescriptionDoctor={false}
-                                    dataScheduleTimeModal={dataScheduleTimeModal}
-                                    isShowLinkDetail={false}
-                                    isShowPrice={true}
-                                />
-                            </div> */}
-
-
-
                             <div className='row'>
                                 <div className='col-6 form-group'>
                                     <label>
