@@ -13,17 +13,14 @@ import { CustomToastCloseButton } from '../components/CustomToast';
 import ConfirmModal from '../components/ConfirmModal';
 import HomePage from './HomePage/HomePage'
 import CustomScrollbars from '../components/CustomScrollbars'
-import DetailTeacher from './Patient/Teacher/DetailTeacher';
+import DetailTeacher from './Center/Teacher/DetailTeacher';
 import Teacher from '../routes/Teacher';
-import VerifyEmail from './Patient/VerifyEmail';
-import DetailCourse from './Patient/DetailCourse';
-import DetailEvent from './Patient/Event/DetailEvent';
+import DetailCourse from './Center/DetailCourse';
+import DetailEvent from './Center/Event/DetailEvent';
 
-import teacher_more from './Patient/Teacher/teacher_more';
-import course_more from './Patient/course_more';
-import event_more from './Patient/Event/event_more';
-
-import UserManage from './System/UserManage';
+import teacher_more from './Center/Teacher/teacher_more';
+import course_more from './Center/course_more';
+import event_more from './Center/Event/event_more';
 
 class App extends Component {
 
@@ -62,7 +59,6 @@ class App extends Component {
                                     <Route path={path.HOMEPAGE} component={HomePage} />
                                     <Route path={path.DETAIL_TEACHER} component={DetailTeacher} />
                                     <Route path={path.DETAIL_EVENT} component={DetailEvent} />
-                                    <Route path={path.VERIFY_EMAIL_BOOKING} component={VerifyEmail} />
                                     <Route path={path.DETAIL_COURSE} component={DetailCourse} />
                                     <Route path={path.TEACHER} component={teacher_more} />
                                     <Route path={path.EVENT} component={event_more} />

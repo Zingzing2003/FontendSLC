@@ -27,7 +27,7 @@ class HomePage extends Component {
                 <HomeHeader isShowBanner={true} />
                 <AboutUs/>
                 <section className="for-loop">
-                    <Event settings={settings} />
+                    {/* <Event settings={settings} /> */}
                     
                     <OutStandingTeacher settings={settings} />
                     <Course settings={settings} />

@@ -20,8 +20,8 @@ class TableManageTeacher extends Component {
             arrTeacher: [],
         }
     }
-    async componentDidMount() {
-        await this.getAllTeacherFromReact()
+     componentDidMount() {
+        this.props.getALLTeachers();
     }
 
     getAllTeacherFromReact = async () => {
@@ -35,20 +35,23 @@ class TableManageTeacher extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
+        
         if (prevProps.teachers!== this.props.teachers) {
+            console.log("did ",this.props.teachers)
             this.setState({
-                teacherRedux: this.props.teachers,
+                arrTeacher: this.props.teachers,
             })
         }
     }
 
 
     handleEditUser = (user) => {
-       // this.props.handleEditUserFromParent(user)
+        this.props.handleEditTeacherFromParent(user)
     }
 
     render() {
         let  arrTeacher = this.state. arrTeacher;
+        console.log("ccc", arrTeacher);
         return (
             <React.Fragment>
                 <table id='TableManageTeacher'>
@@ -89,15 +92,14 @@ class TableManageTeacher extends Component {
 
 const mapStateToProps = state => {
     return {
-        students: state.admin.students,
+        teachers: state.admin.teachers,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAllStudentStart: () => dispatch(actions.fetchAllStudentStart()),
-        fetchDeleteStudentStart: (id) => dispatch(actions.fetchDeleteStudentStart(id)),
-    };
+        getALLTeachers: () => dispatch(actions.getALLTeachers())
+    }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableManageTeacher);

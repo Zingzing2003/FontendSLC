@@ -30,9 +30,6 @@ class UserRedux extends Component {
 	}
 
 	async componentDidMount() {
-		//this.props.getGenderStart();
-		//this.props.getPositionStart();
-		//this.props.getRoleStart();
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
@@ -54,23 +51,11 @@ class UserRedux extends Component {
 		}
 	}
 
-	handleOnChangeImg = async (e) => {
-		let data = e.target.files;
-		let file = data[0];
-		if (file) {
-			let base64 = await CommonUtils.getBase64(file)
-			console.log('check base64: ', base64)
-			let objectUrl = URL.createObjectURL(file);
-			this.setState({
-				previewImgUrl: objectUrl,
-				avatar: base64
-			});
-		}
-	};
 ///modal
 
 	handleAddNewUser = () => {
         this.setState({
+			action: CRUD_ACTIONS.CREATE,
             isOpenModalUser: true
         })
     }
@@ -93,12 +78,7 @@ class UserRedux extends Component {
 
 
 	handleSaveUser = (data) => {
-		console.log("ste", data);
-		// let isValid = this.checkValidInput()
-		// if (isValid === false) return
 		let action  = data.action;
-
-		// fire create user
 		if (action === CRUD_ACTIONS.CREATE) {
 			this.props.createNewUserRedux({
 				UserName: data.UserName,
@@ -190,6 +170,7 @@ class UserRedux extends Component {
                     isOpen={this.state.isOpenModalUser}
                     toggleFromParent={this.toggleUserModal}
                     addNewUser={this.handleSaveUser}
+					user={this.state}
                 />}
 				{this.state.isOpenModalEditUser &&
 				<ModalStudent
@@ -211,119 +192,7 @@ class UserRedux extends Component {
                     		</button>
                 		</div>
 						<div className="row">
-							{/*<div className="col-12 my-3">
-								Quản lí học sinh
-							</div>
-							<div className="col-3">
-								<label>
-									Tài khoản
-								</label>
-								<input
-									className="form-control" type="UserName"
-									value={UserName}
-									onChange={(e) => this.handleChangeInput(e, 'UserName')}
-									disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false}
-								/>
-							</div>
-							<div className="col-3">
-								<label>
-									Mật khẩu
-								</label>
-								<input className="form-control" type="Password"
-									value={Password}
-									onChange={(e) => this.handleChangeInput(e, 'Password')}
-									disabled={this.state.action === CRUD_ACTIONS.EDIT ? true : false}
-								/>
-							</div>
-							<div className="col-3">
-								<label>
-									Họ và tên
-								</label>
-								<input className="form-control" type="text"
-									value={StudentName}
-									onChange={(e) => this.handleChangeInput(e, 'StudentName')}
-								/>
-							</div>
-							<div className="col-3">
-								<label>
-								
-									Ngày sinh
-								</label>
-								
-                   
-                    			<input className="form-control" type="date" id="birthday" name="birthday"
-								value={StudentBirth}
-								onChange={(e) => this.handleChangeInput(e, 'StudentBirth')}/>
-                  
-							</div>
-							<div className="col-3">
-								<label>
-									Địa chỉ
-								</label>
-								<input className="form-control" type="text"
-									value={Address}
-									onChange={(e) => this.handleChangeInput(e, 'Address')}
-								/>
-							</div>
-							<div className="col-9">
-								<label>
-									Tên phụ huynh
-								</label>
-								<input className="form-control" type="text"
-									value={ParentName}
-									onChange={(e) => this.handleChangeInput(e, 'ParentName')}
-								/>
-							</div>
-
-							<div className="col-9">
-								<label>
-									
-									Email
-								</label>
-								<input className="form-control" type="text"
-									value={Email}
-									onChange={(e) => this.handleChangeInput(e, 'Email')}
-								/>
-							</div>
-							<div className="col-9">
-								<label>
-									Số điện thoại
-								</label>
-								<input className="form-control" type="text"
-									value={PhoneNumber}
-									onChange={(e) => this.handleChangeInput(e, 'PhoneNumber')}
-								/>
-							</div>
-							<div className="col-3">
-								<label>
-									Chức danh
-								</label>
-								<select class="form-control"
-									onChange={(e) => this.handleChangeInput(e, 'Role')}
-									value={Role}
-								>
-				
-										<option key="1" value="Student">
-													học sinh
-										</option>
-										
-								</select>
-							</div> 
-							 <div className="col-12 my-3">
-								<button
-									className={
-										this.state.action === CRUD_ACTIONS.EDIT ?
-											"btn btn-warning" : "btn btn-primary"
-									}
-									onClick={() => this.handleSaveUser()}
-								>
-									{this.state.action === CRUD_ACTIONS.EDIT ?
-										<FormattedMessage id="manage-user.save-change" /> :
-										<FormattedMessage id="manage-user.save" />
-									}
-
-								</button>
-							</div>  */}
+							
 							<div className="col-12 mb-5">
 								<TableManageStudent
 									handleEditStudentFromParent={this.handleEditStudentFromParent}
@@ -347,20 +216,12 @@ class UserRedux extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		language: state.app.language,
-		//genderRedux: state.admin.genders,
-		//isLoadingGender: state.admin.isLoadingGender,
-		positions: "",
-		//roles: state.admin.roles,
 		users: state.admin.users,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		//getGenderStart: () => dispatch(actions.fetchGenderStart()),
-		//getPositionStart: () => dispatch(actions.fetchPositionStart()),
-		getRoleStart: () => dispatch(actions.fetchRoleStart()),
 		createNewUserRedux: (data) => dispatch(actions.createNewUserRedux(data)),
 		fetchAllStudentStart: () => dispatch(actions.fetchAllStudentStart()),
 		fetchEditStudentStart: (data) => dispatch(actions.fetchEditStudentStart(data)),

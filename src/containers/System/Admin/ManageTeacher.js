@@ -1,58 +1,109 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './ManageTeacher.scss'
-import { FormattedMessage } from 'react-intl';
-import Select from 'react-select';
+import { CRUD_ACTIONS } from "../../../utils";
 import * as actions from "../../../store/actions";
-import { LANGUAGES, dateFormat } from "../../../utils";
-import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
 import _ from 'lodash';
 import { toast } from 'react-toastify'
-import { bulkCreateSchedule } from '../../../services/userService'
 import TableManageTeacher from '../Admin/TableManageTeacher';
+import ModalTeacher from "./ModalTeacher";
+import { getUserFromTeacher } from '../../../services/teacherService';
 
 class ManageTeacher extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-           
+        this.state = {   
             UserName:"",
             Password:"",
+            TeacherId:"",
             TeacherName:"",
             TeacherBirth:"",
             Address:"",
             Email:"",
             PhoneNumber:"",
-   
+            action:CRUD_ACTIONS.CREATE,
+			
         }
     }
 
     componentDidMount() {
 
     }
-
-    componentDidUpdate(prevProps, prevState) {
-        // if (prevProps.allDoctors !== this.props.allDoctors) {
-        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-        //     this.setState({
-        //         CourseName:"",
-        //         Description:" ",
-        //     })
-        // }
-
-        
-
-        // if (prevProps.language !== this.props.language) {
-        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-        //     this.setState({
-        //         allDoctors: dataSelect,
-        //     })
-        // }
+    componentDidUpdate(prevProps, prevState, snapshot) {	
+		if (prevProps.teachers !== this.props.teachers) {
+			this.setState({
+                isOpenModalEditUser:false,
+                isOpenModalUser:false,
+				UserName: "",
+				Password: "",
+				TeacherId:"",
+				TeacherName: "",
+				TeacherBirth: "",
+				Address: "",
+				Email: "",
+				action: CRUD_ACTIONS.CREATE,
+				//previewImgUrl: ""
+			})
+		}
+	}
+	handleAddNewTeacher = () => {
+        this.setState({
+            action: CRUD_ACTIONS.CREATE,
+            isOpenModalUser: true
+            
+        })
+        //console.log(this.state.action);
+    }
+	handleEditNewUser = () => {
+        this.setState({
+            isOpenModalEditUser: true
+        })
     }
 
-  
+    toggleUserModal = () => {
+        this.setState({
+            isOpenModalUser: !this.state.isOpenModalUser
+        })
+    }
+	toggleEditUserModal = () => {
+        this.setState({
+            isOpenModalEditUser: !this.state.isOpenModalEditUser
+        })
+    }
+
+
+	handleSaveUser = (data) => {
+		console.log("ste", data);
+		// let isValid = this.checkValidInput()
+		// if (isValid === false) return
+		let action  = data.action;
+		if (action === CRUD_ACTIONS.CREATE) {
+			this.props.createNewTeacherRedux({
+				UserName: data.UserName,
+				Password: data.Password,
+				TeacherId:data.TeacherId,
+				TeacherName: data.TeacherName,
+				TeacherBirth: data.TeacherBirth,
+				Address: data.Address,
+				Email: data.Email,
+				PhoneNumber: data.PhoneNumber,			
+			})
+		}
+		if (action === CRUD_ACTIONS.EDIT) {
+			this.props.fetchEditTeacherStart({
+				UserName: data.UserName,
+				Password: data.Password,
+				TeacherId:data.TeacherId,
+				TeacherName: data.TeacherName,
+				TeacherBirth: data.TeacherBirth,
+				Address: data.Address,
+				Email: data.Email,
+				PhoneNumber: data.PhoneNumber,
+			})
+		}
+	}
+
  
     onChangeInput = (e, id) => {
 
@@ -62,147 +113,62 @@ class ManageTeacher extends Component {
 			...copyState
 		})
 	}
+    handleEditTeacherFromParent = async (user) => {
+		let tk= await getUserFromTeacher(user.UserId);
+		console.log("edit",tk);
+		this.setState({
+			isOpenModalEditUser: true,
+			UserName: tk.data.UserName,
+			TeacherId: user.TeacherId,
+			TeacherName: user.TeacherName,
+			Password: tk.data.Password,
+			TeacherBirth: user.TeacherBirth,
+			Address: user.Address,
+			Email: user.Email,
+			PhoneNumber: user.PhoneNumber,
+			action: CRUD_ACTIONS.EDIT,
+			
+
+		})
+	}
 
     render() {
-        // console.log('check state: ', this.state)
-        // console.log('check props: ', this.props)
-        let {
-            TeacherName,
-            TeacherBirth,
-            Address,
-            Email,
-            PhoneNumber,
-            Password,
-            UserName
-		} = this.state;
-        let { schedule } = this.state
-        let { language } = this.props
-        // console.log('check schedule: ', schedule)
-        let yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
+		//console.log
         return (
             <div className='manage-teacher-containner'>
                 <div className='m-s-title'>
-                    {/* /<FormattedMessage id='manage-chedule.title' /> */}
                     Quản lí Giáo Viên
                 </div>
+                {this.state.isOpenModalUser &&
+				<ModalTeacher
+                    isOpen={this.state.isOpenModalUser}
+                    toggleFromParent={this.toggleUserModal}
+                    addNewUser={this.handleSaveUser}
+                    user={this.state}
+                />}
+				{this.state.isOpenModalEditUser &&
+				<ModalTeacher
+                    isOpen={this.state.isOpenModalEditUser}
+                    toggleFromParent={this.toggleEditUserModal}
+                    addNewUser={this.handleSaveUser}
+					user={this.state}
+					
+                />}
                 <div className='container'>
                     <div className='row'>
-                        {/* <div className='col-6 form-group'>
-                            <label>
-                                <FormattedMessage id='manage-chedule.select-doctor' />
-                            </label>
-                            <Select
-                                value={this.state.selectedDoctor}
-                                onChange={this.handleChangeSelectedDoctor}
-                                options={this.state.allDoctors}
-                            />
-                        </div> */}
-            
-            
-                        <div className='col-6 form-group'>
-                            <label>
-                                Tài khoản
-                            </label>
-                            <input className="form-control" type="text"
-									value={UserName}
-									onChange={(e) => this.onChangeInput(e, 'UserName')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                               Mật khẩu
-                            </label>
-                            <input className="form-control" type="text"
-									value={Password}
-									onChange={(e) => this.onChangeInput(e, 'Password')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                                Tên giáo viên
-                            </label>
-                            <input className="form-control" type="text"
-									value={TeacherName}
-									onChange={(e) => this.onChangeInput(e, 'TeacherName')}
-								/>
-                        </div>
-                        <div className="col-6">
-								<label>
-									{/* <FormattedMessage id="manage-user.StudentBirth" /> */}
-									Ngày sinh
-								</label>
-								
-                   
-                    			<input className="form-control" type="date" id="birthday" name="birthday"
-								value={TeacherBirth}
-								onChange={(e) => this.onChangeInput(e, 'TeacherBirth')}/>
-                  
-						</div>
-                        <div className='col-6 form-group'>
-                            <label>
-                              Địa chỉ
-                            </label>
-                            <input className="form-control" type="text"
-									value={Address}
-									onChange={(e) => this.onChangeInput(e, 'Address')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                                Email
-                            </label>
-                            <input className="form-control" type="text"
-									value={Email}
-									onChange={(e) => this.onChangeInput(e, 'Email')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                                Số điện thoại
-                            </label>
-                            <input className="form-control" type="text"
-									value={PhoneNumber}
-									onChange={(e) => this.onChangeInput(e, 'PhoneNumber')}
-								/>
-                        </div>
-      
-                        {/* <div className='col-6 form-group'>
-                            <label>
-                                <FormattedMessage id='manage-chedule.select-date' />
-                            </label>
-                            <DatePicker
-                                onChange={this.handleOnChangeDatePicker}
-                                className='form-control'
-                                value={this.state.currentDate}
-                                minDate={yesterday}
-                            />
-                        </div>
-                        <div className='col-12 pick-hour-container'>
-                            {
-                                schedule && schedule.length > 0 &&
-                                schedule.map((item, index) => {
-                                    return (
-                                        <button
-                                            className={item.isSelected === true ? 'btn btn-schedule active' : 'btn btn-schedule'}
-                                            key={index}
-                                            onClick={() => this.handleClickBtnSchedule(item)}
-                                        >
-                                            {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
-                                        </button>
-                                    )
-                                })
-                            }
-                        </div> */}
-                        <div className='col-12'>
-                            <button
-                                className='btn btn-primary btn-save-schedule'
-                                onClick={() => this.handleClickBtnSaveSchedule()}
-                            >
-                                <FormattedMessage id='manage-chedule.save-info' />
-                            </button>
-
-                        </div>
-                        <TableManageTeacher/>
+                        <div className='mx-1 text-center'>
+                    		<button
+                        	className='btn btn-primary px-3'
+                        	onClick={() => this.handleAddNewTeacher()}>
+                        		<i className="fas fa-user-plus add-user"></i>
+                       			 Add new teacher
+                    		</button>
+                		</div>
+                      
+                        <TableManageTeacher
+                            handleEditTeacherFromParent={this.handleEditTeacherFromParent}
+                            action={this.state.action}
+                        />
                     </div>
                 </div>
             </div>
@@ -212,18 +178,17 @@ class ManageTeacher extends Component {
 
 const mapStateToProps = state => {
     return {
-        CourseName:"",
+        teachers: state.admin.teachers,
         isLoggedIn: state.user.isLoggedIn,
-        language: state.app.language,
-        allDoctors: state.admin.allDoctors,
-        schedule: state.admin.schedule,
+        
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         getALLTeachers: () => dispatch(actions.getALLTeachers()),
-        fetchAllcodeSchedule: () => dispatch(actions.fetchAllcodeSchedule()),
+        createNewTeacherRedux: (data) => dispatch(actions.createNewTeacherRedux(data)),
+		fetchEditTeacherStart: (data) => dispatch(actions.fetchEditTeacherStart(data)),
     };
 };
 

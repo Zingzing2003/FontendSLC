@@ -6,17 +6,11 @@ export const path = {
     SYSTEM: '/system',
     DETAIL_TEACHER: '/detail-teacher/:id',
     DETAIL_EVENT: '/detail-event/:id',
-    DETAIL_CLINIC: '/detail-clinic/:id',
     VERIFY_EMAIL_BOOKING: '/verify-booking',
     DETAIL_COURSE: '/detail-course/:id',
-    TEACHER: "/teacher_more",//'/doctor_more',
+    TEACHER: "/teacher_more",
     EVENT: '/event_more',
     COURSE: '/course_more',
-};
-
-export const LANGUAGES = {
-    VI: 'vi',
-    EN: 'en'
 };
 
 export const CRUD_ACTIONS = {

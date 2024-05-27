@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { push } from "connected-react-router";
 
 import * as actions from "../store/actions";
-import { KeyCodeUtils, LanguageUtils } from "../utils";
+import { KeyCodeUtils } from "../utils";
 
 import userIcon from '../../src/assets/images/user.svg';
 import passIcon from '../../src/assets/images/pass.svg';
@@ -49,7 +49,6 @@ class Login extends Component {
 
     processLogin = () => {
         const { username, password } = this.state;
-
         const { adminLoginSuccess, adminLoginFail } = this.props;
         let loginBody = {
             username: 'admin',
@@ -97,7 +96,6 @@ class Login extends Component {
 
     render() {
         const { username, password, loginError } = this.state;
-        const { lang } = this.props;
 
         return (
             <div className="login-wrapper">
@@ -109,7 +107,7 @@ class Login extends Component {
                         <div className="form-group icon-true">
                             <img className="icon" src={userIcon} alt="this" />
                             <input
-                                placeholder={LanguageUtils.getMessageByKey("login.username", lang)}
+                                placeholder="Điền tên đăng nhập của bạn"
                                 id="username"
                                 name="username"
                                 type="text"
@@ -122,7 +120,7 @@ class Login extends Component {
                         <div id="phone-input-container" className="form-group icon-true">
                             <img className="icon" src={passIcon} alt="this" />
                             <input
-                                placeholder={LanguageUtils.getMessageByKey("login.password", lang)}
+                                placeholder="Điền mật khẩu của bạn"
                                 id="password"
                                 name="password"
                                 type="password"
@@ -144,7 +142,7 @@ class Login extends Component {
                                 id="btnLogin"
                                 type="submit"
                                 className="btn"
-                                value={LanguageUtils.getMessageByKey("login.login", lang)}
+                                value="Đăng nhập"
                                 onClick={this.processLogin}
                             />
                         </div>
@@ -157,7 +155,7 @@ class Login extends Component {
 
 const mapStateToProps = state => {
     return {
-        lang: state.app.language
+      
     };
 };
 

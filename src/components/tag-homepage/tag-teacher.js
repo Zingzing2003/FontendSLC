@@ -3,17 +3,24 @@ import "./tag-teacher.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarCheck ,faMessage} from '@fortawesome/free-solid-svg-icons';
 import { faRocketchat } from '@fortawesome/free-brands-svg-icons';
-
+import imgC from '../../assets/course/course-1.jpg';
 const TagTeacher = ({ date, description, imageSrc }) => {
+  let s=  require('../../assets/Teacher/teacher-2.jpg')
+  if(imageSrc){
+    let path = '../../assets/Teacher/teacher-2.jpg';
+    // let path= '../../assets/Teacher/teacher-'+ imageSrc+'.jpg';
+     s= require('../../assets/Teacher/teacher-'+ imageSrc+'.jpg');
+    console.log(imageSrc);
+  }
   return (
     <div className="tag-teacher">
-      <section className="masked-doctor-image">
+      <section className="masked-teacher-image">
         <img
           className="img-teacher-content"
           loading="lazy"
           alt=""
-          // src={imageSrc}
-          src='https://scontent.fhan14-3.fna.fbcdn.net/v/t1.6435-9/41982647_164903614388709_2031902075155120128_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFlYJ3cpSfcn3UfMLiGzK85_5UJmLo11jT_lQmYujXWNDjzafkD8rJdVsESxCgkTZMca3IHRWqAQXA9RgrorY7z&_nc_ohc=30yxq15jhRkAb5VQBev&_nc_ht=scontent.fhan14-3.fna&oh=00_AfBiKOvK25CFSdsa4JlTeIgrra7d81-5dWugu1OK1rDLyQ&oe=664438BD'
+          src={s.default}
+         
         />
       </section>
       <section className='container'>

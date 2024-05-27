@@ -5,7 +5,7 @@ import './TableManageClass.scss'
 import MarkdownIt from 'markdown-it';
 import 'react-markdown-editor-lite/lib/index.css';
 import { getClassById } from '../../../services/userService';
-import { getTopTeacherByUserId } from '../../../services/teacherService';
+import { getTeacherByUserId } from '../../../services/teacherService';
 
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
@@ -35,7 +35,7 @@ class TableManageClass extends Component {
         {
             let userId= userInfo[0].UserId;
             //let userId= 3;
-            let teacher= await getTopTeacherByUserId(userId);
+            let teacher= await getTeacherByUserId(userId);
             let teacherId= teacher.data.TeacherId;
             this.state.TeacherName= teacher.data.TeacherName;
             //let teacherId= 1;

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { emitter } from '../../../utils/emitter'
@@ -113,7 +112,7 @@ class ModalStudent extends Component {
                 size='lg'
                 className='modal-user-container'
             >
-                <ModalHeader toggle={() => this.toggle()}>Create a new user</ModalHeader>
+                <ModalHeader toggle={() => this.toggle()}>Lưu học sinh</ModalHeader>
                 <ModalBody>
                     <div className='modal-user-body'>
                         <div className='input-container'>
@@ -208,7 +207,7 @@ class ModalStudent extends Component {
                     >
                         {this.state.action === CRUD_ACTIONS.EDIT ?
 										"Lưu thay đổi" :
-										"Lưu người dùng"
+										"Lưu học sinh"
 									}
                     </button>{' '}
                     <Button

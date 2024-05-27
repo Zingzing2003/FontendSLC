@@ -44,7 +44,7 @@ class TableManageStaff extends Component {
 
 
     handleEditUser = (user) => {
-       // this.props.handleEditUserFromParent(user)
+        this.props.handleEditStaffFromParent(user);
     }
 
     render() {
@@ -73,6 +73,10 @@ class TableManageStaff extends Component {
                                         <button className='btn-edit'
                                             onClick={() => this.handleEditUser(item)}>
                                             <i className="far fa-edit"></i>
+                                        </button>
+                                        <button className='btn-delete'
+                                            onClick={() => this.handleDeleteStudent(item)}>
+                                            <i className="far fa-trash-alt"></i>
                                         </button>
                                         
                                     </td>

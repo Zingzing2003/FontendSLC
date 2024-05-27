@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import * as actions from "../../store/actions";
 import Navigator from '../../components/Navigator';
 import { adminMenu, teacherMenu } from './menuApp';
@@ -16,9 +15,6 @@ class Header extends Component {
         }
     }
 
-    handleChangeLanguage = (language) => {
-        this.props.changeLanguageAppRedux(language)
-    }
 
     componentDidMount() {
         let { userInfo } = this.props
@@ -29,11 +25,6 @@ class Header extends Component {
                 menu = adminMenu
             if( userInfo[0].Role== "Teacher")
                  menu = teacherMenu
-            // if (roleID === USER_ROLE.ADMIN) {
-            //     menu = adminMenu
-            // } else if (roleID === USER_ROLE.DOCTOR) {
-            //     menu = doctorMenu
-            // }
         }
         this.setState({
             menuApp: menu
@@ -41,7 +32,7 @@ class Header extends Component {
     }
 
     render() {
-        const { processLogout, language, userInfo } = this.props;
+        const { processLogout, userInfo } = this.props;
         console.log("check info ", userInfo[0]);
         let { menuApp } = this.state
         return (
@@ -53,7 +44,7 @@ class Header extends Component {
 
                 <div className='languages'>
                     <span className='welcome'>
-                        <FormattedMessage id='homeHeader.welcome' />, {userInfo[0] && userInfo[0].Role? userInfo[0].Role : ""}!
+                        Welcome {userInfo[0] && userInfo[0].Role? userInfo[0].Role : ""}!
                     </span>
                 
                     {/* nút logout */}
@@ -78,7 +69,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         processLogout: () => dispatch(actions.processLogout()),
-        changeLanguageAppRedux: (language) => dispatch(actions.changeLanguageApp(language))
     };
 };
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import * as actions from "../../../store/actions";
 import './TableManageStudent.scss'
@@ -68,7 +67,7 @@ class TableManageStudent extends Component {
 
     render() {
         let arrStudents = this.state.studentRedux;
-        // console.log("check",arrStudents);
+         console.log("check",arrStudents);
         return (
             <React.Fragment>
                 <table id='TableManageStudent'>
@@ -77,6 +76,7 @@ class TableManageStudent extends Component {
                         <th>Họ và Tên</th>
                         <th>Ngày sinh</th>
                         <th>Địa chỉ</th>
+                        <th>Sđt phụ huynh</th>
                         <th>Thao tác</th>
                     </tr>
                     {arrStudents && arrStudents.length > 0 &&
@@ -86,7 +86,8 @@ class TableManageStudent extends Component {
                                     <td>{item.Email}</td>
                                     <td>{item.StudentName}</td>
                                     <td>{item.StudentBirth}</td>
-                                    <td>{item.StudentAddress}</td>
+                                    <td>{item.Address}</td>
+                                    <td>{item.PhoneNumber}</td>
                                     <td>
                                         <button className='btn-edit'
                                             onClick={() => this.handleEditUser(item)}>
@@ -117,7 +118,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchAllStudentStart: () => dispatch(actions.fetchAllStudentStart()),
-        fetchDeleteStudentStart: (id) => dispatch(actions.fetchDeleteStudentStart(id)),
+        
     };
 };
 

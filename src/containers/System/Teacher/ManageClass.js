@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './ManageClass.scss'
-import { FormattedMessage } from 'react-intl';
-import Select from 'react-select';
 import * as actions from "../../../store/actions";
-import moment from 'moment';
 import _ from 'lodash';
-import { toast } from 'react-toastify'
-import { bulkCreateSchedule } from '../../../services/userService'
 import TableManageClass from './TableManageClass';
 
 class ManageClass extends Component {
@@ -26,22 +21,7 @@ class ManageClass extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // if (prevProps.allDoctors !== this.props.allDoctors) {
-        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-        //     this.setState({
-        //         CourseName:"",
-        //         Description:" ",
-        //     })
-        // }
-
-        
-
-        // if (prevProps.language !== this.props.language) {
-        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-        //     this.setState({
-        //         allDoctors: dataSelect,
-        //     })
-        // }
+       
     }
 
   
@@ -67,7 +47,6 @@ class ManageClass extends Component {
         return (
             <div className='manage-class-containner'>
                 <div className='m-s-title'>
-                    {/* /<FormattedMessage id='manage-chedule.title' /> */}
                     Quản lí lớp học
                 </div>
                 <div className='container'>
@@ -103,10 +82,10 @@ class ManageClass extends Component {
                         
                         <div className='col-12'>
                             <button
-                                className='btn btn-primary btn-save-schedule'
-                               // onClick={() => this.handleClickBtnSaveSchedule()}
+                                className='btn btn-primary btn-save-class'
+    
                             >
-                                <FormattedMessage id='manage-chedule.save-info' />
+                                Lưu thông tin
                             </button>
 
                         </div>
@@ -121,18 +100,15 @@ class ManageClass extends Component {
 const mapStateToProps = state => {
     return {
          CourseName:"",
-        // isLoggedIn: state.user.isLoggedIn,
-        // language: state.app.language,
-        // allDoctors: state.admin.allDoctors,
-        // schedule: state.admin.schedule,
+         isLoggedIn: state.user.isLoggedIn,
+       
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
          getALLTeachers: () => dispatch(actions.getALLTeachers()),
-        // fetchAllcodeSchedule: () => dispatch(actions.fetchAllcodeSchedule()),
-    };
+       };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ManageClass);

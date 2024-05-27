@@ -29,7 +29,7 @@ const appPersistConfig = {
 const adminPersistConfig = {
     ...persistCommonConfig,
     key: 'admin',
-    whitelist: ['handbookHome']
+    whitelist: ['courses']
 };
 
 export default (history) => combineReducers({

@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Slider from "react-slick";
 import * as actions from '../../../store/actions'
-import { LANGUAGES } from '../../../utils/constant'
-import { FormattedMessage } from 'react-intl';
 import { withRouter } from 'react-router-dom';
-import { getAllClinic } from '../../../services/userService'
 import TagTeacher from '../../../components/tag-homepage/tag-teacher';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -17,15 +14,15 @@ class OutStandingTeacher extends Component {
         super(props)
         this.sliderRef = React.createRef(); // Tạo một tham chiếu
         this.state = {
-            arrDoctors: [],
+            allTeacher: [],
             isLoading: true,
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.topDoctors !== this.props.topDoctors) {
+        if (prevProps.topTeacher !== this.props.topTeacher) {
             this.setState({
-                arrDoctors: this.props.topDoctors
+                allTeacher: this.props.topTeacher
             })
         }
     }
@@ -50,8 +47,8 @@ class OutStandingTeacher extends Component {
     }
 
     render() {
-        let { arrDoctors, isLoading } = this.state
-        console.log(arrDoctors);
+        let { allTeacher, isLoading } = this.state
+        console.log(allTeacher);
         let { language } = this.props
         return (
             <>
@@ -60,16 +57,16 @@ class OutStandingTeacher extends Component {
                         <div className='section-container'>
                             <div className='section-header'>
                                 <span className='title-section'>
-                                    <FormattedMessage id='home-page.outstanding-teacher' />
+                                    Giáo viên nổi bật
                                 </span>
                                 <button className='btn-section'onClick={() => this.handleViewTeacherMore()}>
-                                    <FormattedMessage id='home-page.more-info' />
+                                    Xem thêm
                                 </button>
                             </div>
                             <div className='section-body'>
                                 <Slider ref={this.sliderRef} {...this.props.settings}>
-                                    {arrDoctors && arrDoctors.length > 0 &&
-                                        arrDoctors.map((item, index) => {
+                                    {allTeacher && allTeacher.length > 0 &&
+                                        allTeacher.map((item, index) => {
                                             let imageBase64 = ''
                                             // if (item.image) {
                                             if(item.Email){
@@ -83,17 +80,16 @@ class OutStandingTeacher extends Component {
                                                     <TagTeacher
                                                         date="12/03/2024"
                                                         description={nameVi}
-                                                        imageSrc={imageBase64}
+                                                        imageSrc={item.TeacherId}
                                                     />
                                                     {/* <div className='customize-border'>
                                                 <div className='outer-bg'>
-                                                    <div className='bg-img section-outstanding-doctor'
+                                                    <div className='bg-img '
                                                         style={{ backgroundImage: `url(${imageBase64})`, }}
                                                     ></div>
                                                 </div>
                                                 <div className='position text-center'>
-                                                    <div>{language === LANGUAGES.VI ? nameVi : nameEn}</div>
-                                                    <div>Thần Kinh 1</div>
+                                                   
                                                 </div>
                                             </div> */}
                                                 </div>
@@ -128,9 +124,9 @@ class OutStandingTeacher extends Component {
 
 const mapStateToProps = state => {
     return {
-        language: state.app.language,
+        
         isLoggedIn: state.user.isLoggedIn,
-        topDoctors: state.admin.topDoctors
+        topTeacher: state.admin.topTeacher
     };
 };
 

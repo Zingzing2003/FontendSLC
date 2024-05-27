@@ -10,7 +10,7 @@ class HomeFooter extends Component {
         super(props)
         // this.sliderRef = React.createRef(); // Tạo một tham chiếu
         // this.state = {
-        //     arrDoctors: [],
+        //  
         // }
     }
     handleLogin = () => {
@@ -27,7 +27,7 @@ class HomeFooter extends Component {
         }
     }
 
-    handleViewClinicMore = () => {
+    handleViewEventMore = () => {
         if (this.props.history) {
             this.props.history.push(`/event_more`)
         }
@@ -68,7 +68,7 @@ class HomeFooter extends Component {
                             <p className="txt" onClick={() => this.handleViewTeacherMore()}>
                                 Giáo viên
                             </p>
-                            <p className="txt" onClick={() => this.handleViewClinicMore()}>
+                            <p className="txt" onClick={() => this.handleViewEventMore()}>
                                 Sự kiện
                             </p>
                             <p className="txt" onClick={() => this.handleViewCourseMore()}>

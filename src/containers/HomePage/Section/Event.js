@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import Slider from "react-slick";
-import specialtyImg from '../../../assets/specialty/than-kinh.jpg'
-import { getAllSpecialty } from '../../../services/userService'
 import { getAllCourses ,getAllEvents} from '../../../services/userService'//
 import { withRouter } from 'react-router'
 import TagEvent from '../../../components/tag-homepage/tag-event';
@@ -21,7 +18,6 @@ class Event extends Component {
     }
 
     async componentDidMount() {
-        //let res = await getAllSpecialty()
         let res = await getAllEvents()
         console.log(res);
         console.log('check res: ', res)

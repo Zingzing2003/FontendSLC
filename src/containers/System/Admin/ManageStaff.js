@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './ManageStaff.scss'
-import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import * as actions from "../../../store/actions";
-import { LANGUAGES, dateFormat } from "../../../utils";
 import DatePicker from '../../../components/Input/DatePicker';
 import moment from 'moment';
 import _ from 'lodash';
 import { toast } from 'react-toastify'
-import { bulkCreateSchedule } from '../../../services/userService'
 import TableManageStaff from '../Admin/TableManageStaff';
-
+import ModalStaff from "./ModalStaff";
+import { CRUD_ACTIONS } from "../../../utils";
+import { getUserFromStaff } from '../../../services/staffService';
 class ManageStaff extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-           
+            isOpenModalStaff: false,
+            isOpenModalEditStaff: false,
             UserName:"",
             Password:"",
             StaffName:"",
@@ -25,7 +25,7 @@ class ManageStaff extends Component {
             Address:"",
             Email:"",
             PhoneNumber:"",
-   
+            action:'',
         }
     }
 
@@ -34,22 +34,7 @@ class ManageStaff extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        // if (prevProps.allDoctors !== this.props.allDoctors) {
-        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-        //     this.setState({
-        //         CourseName:"",
-        //         Description:" ",
-        //     })
-        // }
 
-        
-
-        // if (prevProps.language !== this.props.language) {
-        //     let dataSelect = this.buildDataInputSelect(this.props.allDoctors)
-        //     this.setState({
-        //         allDoctors: dataSelect,
-        //     })
-        // }
     }
 
   
@@ -63,6 +48,83 @@ class ManageStaff extends Component {
 		})
 	}
 
+
+    handleAddNewStaff = () => {
+        this.setState({
+            action: CRUD_ACTIONS.CREATE,
+            isOpenModalStaff: true
+            
+        })
+        //console.log(this.state.action);
+    }
+    handleEditNewUser = () => {
+        this.setState({
+            isOpenModalEditStaff: true
+        })
+    }
+
+    toggleStaffModal = () => {
+        this.setState({
+            isOpenModalStaff: !this.state.isOpenModalStaff
+        })
+    }
+	toggleEditSTaffModal = () => {
+        this.setState({
+            isOpenModalEditStaff: !this.state.isOpenModalEditStaff
+        })
+    }
+
+
+	handleSaveUser = (data) => {
+		console.log("ste", data);
+		// let isValid = this.checkValidInput()
+		// if (isValid === false) return
+		let action  = data.action;
+		if (action === CRUD_ACTIONS.CREATE) {
+			this.props.createNewTeacherRedux({
+				UserName: data.UserName,
+				Password: data.Password,
+				TeacherId:data.TeacherId,
+				TeacherName: data.TeacherName,
+				TeacherBirth: data.TeacherBirth,
+				Address: data.Address,
+				Email: data.Email,
+				PhoneNumber: data.PhoneNumber,			
+			})
+		}
+		if (action === CRUD_ACTIONS.EDIT) {
+			this.props.fetchEditTeacherStart({
+				UserName: data.UserName,
+				Password: data.Password,
+				TeacherId:data.TeacherId,
+				TeacherName: data.TeacherName,
+				TeacherBirth: data.TeacherBirth,
+				Address: data.Address,
+				Email: data.Email,
+				PhoneNumber: data.PhoneNumber,
+			})
+		}
+	}
+
+    handleEditStaffFromParent = async (user) => {
+        console.log(user.UserId);
+		let tk= await getUserFromStaff(user.UserId);
+        console.log("ch",tk)
+		if(tk){
+		this.setState({
+			isOpenModalEditStaff: true,
+			UserName: tk.data.UserName,
+			TeacherId: user.TeacherId,
+			TeacherName: user.TeacherName,
+			Password: tk.data.Password,
+			TeacherBirth: user.TeacherBirth,
+			Address: user.Address,
+			Email: user.Email,
+			PhoneNumber: user.PhoneNumber,
+			action: CRUD_ACTIONS.EDIT,
+
+		})}
+	}
     render() {
         // console.log('check state: ', this.state)
         // console.log('check props: ', this.props)
@@ -75,130 +137,42 @@ class ManageStaff extends Component {
             Password,
             UserName
 		} = this.state;
-        // console.log('check schedule: ', schedule)
-        //let yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
         return (
             <div className='manage-staff-containner'>
                 <div className='m-s-title'>
-                    {/* /<FormattedMessage id='manage-chedule.title' /> */}
+                   
                     Quản lí Nhân Viên
                 </div>
+                {this.state.isOpenModalStaff &&
+				<ModalStaff
+                    isOpen={this.state.isOpenModalStaff}
+                    toggleFromParent={this.toggleStaffModal}
+                    addNewUser={this.handleSaveUser}
+                    user={this.state}
+                />}
+				{this.state.isOpenModalEditStaff &&
+				<ModalStaff
+                    isOpen={this.state.isOpenModalEditStaff}
+                    toggleFromParent={this.toggleEditSTaffModal}
+                    addNewUser={this.handleSaveUser}
+					user={this.state}
+					
+                />}
                 <div className='container'>
                     <div className='row'>
-                        {/* <div className='col-6 form-group'>
-                            <label>
-                                <FormattedMessage id='manage-chedule.select-doctor' />
-                            </label>
-                            <Select
-                                value={this.state.selectedDoctor}
-                                onChange={this.handleChangeSelectedDoctor}
-                                options={this.state.allDoctors}
-                            />
-                        </div> */}
-                        <div className='col-6 form-group'>
-                            <label>
-                                Tài khoản
-                            </label>
-                            <input className="form-control" type="text"
-									value={UserName}
-									onChange={(e) => this.onChangeInput(e, 'StafUserNamefName')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                               Mật khẩu
-                            </label>
-                            <input className="form-control" type="text"
-									value={Password}
-									onChange={(e) => this.onChangeInput(e, 'Password')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                                Tên nhân viên
-                            </label>
-                            <input className="form-control" type="text"
-									value={StaffName}
-									onChange={(e) => this.onChangeInput(e, 'StaffName')}
-								/>
-                        </div>
-                        <div className="col-6">
-								<label>
-									{/* <FormattedMessage id="manage-user.StudentBirth" /> */}
-									Ngày sinh
-								</label>
-								
-                   
-                    			<input className="form-control" type="date" id="birthday" name="birthday"
-								value={DateBirth}
-								onChange={(e) => this.onChangeInput(e, 'DateBirth')}/>
-                  
-						</div>
-                        <div className='col-6 form-group'>
-                            <label>
-                              Địa chỉ
-                            </label>
-                            <input className="form-control" type="text"
-									value={Address}
-									onChange={(e) => this.onChangeInput(e, 'Address')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                                Email
-                            </label>
-                            <input className="form-control" type="text"
-									value={Email}
-									onChange={(e) => this.onChangeInput(e, 'Email')}
-								/>
-                        </div>
-                        <div className='col-6 form-group'>
-                            <label>
-                                Số điện thoại
-                            </label>
-                            <input className="form-control" type="text"
-									value={PhoneNumber}
-									onChange={(e) => this.onChangeInput(e, 'PhoneNumber')}
-								/>
-                        </div>
-      
-                        {/* <div className='col-6 form-group'>
-                            <label>
-                                <FormattedMessage id='manage-chedule.select-date' />
-                            </label>
-                            <DatePicker
-                                onChange={this.handleOnChangeDatePicker}
-                                className='form-control'
-                                value={this.state.currentDate}
-                                minDate={yesterday}
-                            />
-                        </div>
-                        <div className='col-12 pick-hour-container'>
-                            {
-                                schedule && schedule.length > 0 &&
-                                schedule.map((item, index) => {
-                                    return (
-                                        <button
-                                            className={item.isSelected === true ? 'btn btn-schedule active' : 'btn btn-schedule'}
-                                            key={index}
-                                            onClick={() => this.handleClickBtnSchedule(item)}
-                                        >
-                                            {language === LANGUAGES.VI ? item.valueVi : item.valueEn}
-                                        </button>
-                                    )
-                                })
-                            }
-                        </div> */}
-                        <div className='col-12'>
-                            <button
-                                className='btn btn-primary btn-save-schedule'
-                                onClick={() => this.handleClickBtnSaveSchedule()}
-                            >
-                                <FormattedMessage id='manage-chedule.save-info' />
-                            </button>
-
-                        </div>
-                        <TableManageStaff/>
+                    <   div className='mx-1 text-center'>
+                    		<button
+                        	className='btn btn-primary px-3'
+                        	onClick={() => this.handleAddNewStaff()}>
+                        		<i className="fas fa-user-plus add-user"></i>
+                       			 Thêm nhân viên
+                    		</button>
+                		</div>
+                        <TableManageStaff
+                            handleEditStaffFromParent={this.handleEditStaffFromParent}
+                            action={this.state.action}
+                        
+                        />
                     </div>
                 </div>
             </div>
@@ -208,11 +182,8 @@ class ManageStaff extends Component {
 
 const mapStateToProps = state => {
     return {
-        // CourseName:"",
-        // isLoggedIn: state.user.isLoggedIn,
-        // language: state.app.language,
-        // allDoctors: state.admin.allDoctors,
-        // schedule: state.admin.schedule,
+        isLoggedIn: state.user.isLoggedIn,
+        
     };
 };
 

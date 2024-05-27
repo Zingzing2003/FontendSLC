@@ -8,7 +8,7 @@ import handbook_sample from '../../../assets/course/course-1.jpg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../../../components/loading/loading';
-import { getAllCourses } from '../../../services/userService'//
+import { getAllCourse } from '../../../services/courseService'//
 
 class Course extends Component {
     constructor(props) {
@@ -22,19 +22,19 @@ class Course extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.handbookHomeRedux !== this.props.handbookHomeRedux) {
+        if (prevProps.courses !== this.props.courses) {
             this.setState({
-                arrCourse: this.props.handbookHomeRedux
+                arrCourse: this.props.courses
             })
         }
     }
 
     async componentDidMount() {
-        await this.props.getCourse();
+        await this.props.getALLCourse();
         this.props.settings && this.setState({ isLoading: false });
 
         //new
-        let res = await getAllCourses()
+        let res = await getAllCourse()
         
         // this.props.settings && this.setState({ isLoading: false });
         if (res && res.errCode === 0) {
@@ -64,7 +64,7 @@ class Course extends Component {
             slidesToShow: 3, // Số lượng slide hiển thị trên mỗi lần cuộn
             slidesToScroll: 1 // Số lượng slide cuộn mỗi lần
         };
-        // console.log('handbookHomeRedux::::::', this.props.handbookHomeRedux)
+        // console.log('courses::::::', this.props.courses)
         return (
             <>
                 {isLoading ? (<Loading />) :
@@ -128,13 +128,13 @@ class Course extends Component {
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
-        handbookHomeRedux: state.admin.handbookHome
+        courses: state.admin.courses
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getCourse: () => dispatch(actions.getCourse())
+        getALLCourse: () => dispatch(actions.getALLCourse())
     };
 };
 

@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import './HomeHeader.scss'
-import { LANGUAGES } from '../../utils'
-import { changeLanguageApp } from '../../store/actions/appActions'
 import { withRouter } from 'react-router-dom';
 import logo from "../../assets/images/logo.jpg";
 
 class HomeHeader extends Component {
 
-    changeLanguage = (language) => {
-        this.props.changeLanguageAppRedux(language)
-    }
 
     returnHome = () => {
         if (this.props.history) {
@@ -79,7 +73,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        changeLanguageAppRedux: (language) => dispatch(changeLanguageApp(language))
+       
     };
 };
 
